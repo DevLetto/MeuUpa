@@ -1,33 +1,52 @@
-HELP.md
+### SPRING BOOT / MAVEN ###
 target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+HELP.md
+/logs/
+*.log
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
+# O wrapper garante que o projeto rode em qualquer máquina sem Maven instalado
+# Se quiser ignorar o jar do Maven, descomente a linha abaixo:
+# .mvn/wrapper/maven-wrapper.jar
+
+### ECLIPSE / STS ###
 .project
-.settings
+.classpath
+.settings/
+.factorypath
 .springBeans
 .sts4-cache
+.apt_generated
+.metadata/
+bin/
+*.tmp
+*.bak
+*.swp
+*~
 
-### IntelliJ IDEA ###
-.idea
+### INTELLIJ IDEA (Caso você ou alguém da equipe use) ###
+.idea/
 *.iws
 *.iml
 *.ipr
+out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
+### VS CODE ###
 .vscode/
+
+### COMPILED FILES & ARCHIVES ###
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+### SISTEMA OPERACIONAL ###
+.DS_Store
+Thumbs.db
+
+### CRASH LOGS ###
+hs_err_pid*
+replay_pid*
