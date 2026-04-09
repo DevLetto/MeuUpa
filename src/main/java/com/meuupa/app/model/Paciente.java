@@ -2,7 +2,10 @@ package com.meuupa.app.model;
 
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,10 +27,12 @@ public class Paciente implements Serializable {
 	@Column
 	String cpf;
 	@Column
-	LocalDateTime dataNascimento;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	LocalDate dataNascimento;
 	@Column
 	String corTriagem;
 	@Column
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	LocalDateTime data;
 	
 	public Paciente() {
@@ -67,12 +72,12 @@ public class Paciente implements Serializable {
 	}
 
 
-	public LocalDateTime getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
 
-	public void setDataNascimento(LocalDateTime dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 	
