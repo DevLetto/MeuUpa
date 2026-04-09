@@ -22,5 +22,14 @@ public class PacienteService {
 	public Paciente salvar(Paciente paciente) {
 		return pacienteRepository.save(paciente);
 	}
+	
+	public void deletar(Long id) {
+		pacienteRepository.deleteById(id);
+	}
+	
+	public Paciente atualizar(Long id, Paciente pacienteAtualizado) {
+		pacienteAtualizado.setId(id.intValue());
+		return pacienteRepository.save(pacienteAtualizado);
+	}
 
 }
