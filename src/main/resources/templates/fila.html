@@ -1,0 +1,7 @@
+<span th:switch="${paciente.corTriagem}">
+    <span th:case="'VERMELHO'" class="badge bg-danger">VERMELHO</span>
+    <span th:case="'LARANJA'" class="badge bg-warning text-dark">LARANJA</span>
+    <span th:case="'AMARELO'" class="badge bg-warning">AMARELO</span>
+    <span th:case="'VERDE'" class="badge bg-success">VERDE</span>
+    <span th:case="'AZUL'" class="badge bg-primary">AZUL</span>
+</span>
