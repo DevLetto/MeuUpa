@@ -1,5 +1,6 @@
 package com.meuupa.app.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class PacienteService {
 	}
 	
 	public Paciente salvar(Paciente paciente) {
-		return pacienteRepository.save(paciente);
+	    paciente.setData(LocalDateTime.now());
+	    return pacienteRepository.save(paciente);
 	}
 	
 	public void deletar(Long id) {

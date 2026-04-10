@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Lista de Pacientes</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" >
+</head>
+<body>
+<div class="container mt-5">
+	<h2>Fila de Pacientes</h2>
+	<a href="/pacientes/formulario" class="btn btn-primary mb-3">+ Cadastrar Paciente</a>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>CPF</th>
+				<th>Triagem</th>
+				<th>Horário</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="paciente : ${pacientes}">
+				<td th:text="${paciente.nome}"></td>
+				<td th:text="${paciente.cpf}"></td>
+				<td>
+					<span th:switch="${paciente.corTriagem}">
+					    <span th:case="'VERMELHO'" class="badge bg-danger">VERMELHO</span>
+					    <span th:case="'LARANJA'" class="badge bg-warning text-dark">LARANJA</span>
+					    <span th:case="'AMARELO'" class="badge bg-warning">AMARELO</span>
+					    <span th:case="'VERDE'" class="badge bg-success">VERDE</span>
+					    <span th:case="'AZUL'" class="badge bg-primary">AZUL</span>
+					</span>
+				</td>
+				<td th:text="${paciente.data}"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+</body>
+</html>
