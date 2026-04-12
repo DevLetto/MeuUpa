@@ -38,6 +38,12 @@ public class PacienteController {
 		return "lista";
 	}
 	
+	@GetMapping("/fila")
+	public String fila(Model model) {
+		model.addAttribute("pacientes", pacienteService.listarFila());
+		return "fila";
+	}
+	
 	@PostMapping("/salvar")
 	public String salvarFormulario (@ModelAttribute Paciente paciente) {
 		pacienteService.salvar(paciente);

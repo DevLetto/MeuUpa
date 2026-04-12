@@ -29,7 +29,7 @@
                         <td class="px-4 py-3" th:text="${paciente.nome}"></td>
                         <td class="px-4 py-3" th:text="${paciente.cpf}"></td>
                         <td class="px-4 py-3">
-                            <span th:switch="${paciente.corTriagem}">
+                            <span th:switch="${paciente.corTriagem.name()}">
                                 <span th:case="'VERMELHO'" class="badge bg-danger">VERMELHO</span>
                                 <span th:case="'LARANJA'" class="badge bg-warning text-dark">LARANJA</span>
                                 <span th:case="'AMARELO'" class="badge bg-warning">AMARELO</span>

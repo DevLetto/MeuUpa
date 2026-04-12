@@ -37,6 +37,10 @@ public class Paciente extends Pessoa implements Serializable {
 	@Column
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	LocalDateTime data;
+	@Column
+	@Enumerated(EnumType.STRING)
+	private StatusPaciente status;
+	
 
 	public Paciente() {
 
@@ -83,6 +87,14 @@ public class Paciente extends Pessoa implements Serializable {
 	@Override
 	public String getResumo() {
 		return "Paciente: " + nome + " | Triagem: " + corTriagem;
+	}
+
+	public StatusPaciente getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusPaciente status) {
+		this.status = status;
 	}
 
 }
