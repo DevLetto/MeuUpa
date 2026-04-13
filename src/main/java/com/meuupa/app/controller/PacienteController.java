@@ -70,8 +70,8 @@ public class PacienteController {
 		return ResponseEntity.ok(pacienteService.atualizar(id, paciente));
 	}
 
-	@PostMapping("/chamar/{id}")
-	public String chamarProximo(@PathVariable Long id) {
+	@PostMapping("/chamar")
+	public String chamarProximo() {
 		pacienteService.chamarProximo();
 		return "redirect:/pacientes/lista";
 	}

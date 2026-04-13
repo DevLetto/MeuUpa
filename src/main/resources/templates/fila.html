@@ -10,7 +10,15 @@
    
 	<div class="container mt-5">
 		<h2>Fila de Atendimento</h2>
-		<a href="/pacientes/formulario" class="btn btn-primary mb-3">+ Cadastrar Paciente</a>
+		<div class="d-flex justify-content-start align-item-center gap-3">
+			<a href="/pacientes/formulario" class="btn btn-primary mb-3">+ Cadastrar Paciente</a>
+			 
+	        <form th:action="@{/pacientes/chamar}" method="post">
+	            <button type="submit" class="btn btn-success  mb-3 ">Chamar Proximo</button>
+	        </form>
+		</div>
+		
+               
 		
 		<table class="table table-striped">
 			<thead>
@@ -19,7 +27,7 @@
 					<th>Nome</th>
 					<th>Triagem</th>
 					<th>Horario de Chegada</th>
-					<th>Ação</th>
+					
 				</tr>
 			</thead>
 			<tbody>
@@ -36,11 +44,7 @@
                     </span>
                 </td>
                 <td th:text="${paciente.data}"></td>
-                <td>
-                    <form th:action="@{/pacientes/chamar/{id}(id=${paciente.id})}" method="post">
-                        <button type="submit" class="btn btn-success btn-sm">Chamar</button>
-                    </form>
-                </td>
+               
             </tr>
 			</tbody>
 		</table>

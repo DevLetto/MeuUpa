@@ -21,6 +21,9 @@
                     <a class="nav-link"
                        th:href="@{/pacientes/lista}"
                        th:classappend="${paginaAtual == 'lista'} ? ' active' : ''">Lista</a>
+                       <a class="nav-link"
+                       th:href="@{/pacientes/fila}"
+                       th:classappend="${paginaAtual == 'fila'} ? ' active' : ''">Fila</a>
                     <a class="nav-link"
                        th:href="@{/pacientes/formulario}"
                        th:classappend="${paginaAtual == 'cadastro'} ? ' active' : ''">Cadastrar paciente</a>
