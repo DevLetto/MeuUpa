@@ -5,11 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${titulo} + ' | Meu UPA'">Meu UPA</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .brand-logo-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.35rem 0.75rem;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.14);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(6px);
+        }
+
+        .brand-logo {
+            height: 48px;
+            width: auto;
+            max-width: 160px;
+            object-fit: contain;
+            display: block;
+        }
+
+        @media (max-width: 576px) {
+            .brand-logo-wrap {
+                padding: 0.3rem 0.65rem;
+            }
+
+            .brand-logo {
+                height: 40px;
+                max-width: 130px;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav th:fragment="navbar(paginaAtual)" class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-semibold" th:href="@{/pacientes/lista}">Meu UPA</a>
+            <a class="navbar-brand brand-logo-wrap" th:href="@{/pacientes/lista}">
+                <img class="brand-logo"
+                     th:src="@{/img/logo-upa.png}"
+                     src="/img/logo-upa.png"
+                     alt="Meu UPA"
+                     loading="eager">
+            </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal"
                 aria-controls="navbarPrincipal" aria-expanded="false" aria-label="Alternar navegacao">
@@ -21,7 +58,7 @@
                     <a class="nav-link"
                        th:href="@{/pacientes/lista}"
                        th:classappend="${paginaAtual == 'lista'} ? ' active' : ''">Lista</a>
-                       <a class="nav-link"
+                    <a class="nav-link"
                        th:href="@{/pacientes/fila}"
                        th:classappend="${paginaAtual == 'fila'} ? ' active' : ''">Fila</a>
                     <a class="nav-link"
