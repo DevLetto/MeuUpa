@@ -86,5 +86,20 @@ public class PacienteService {
 		}
 
 	}
+	
+	public Paciente chamarProximo() {
+		try {
+			List<Paciente> fila = listarFila();
+			if (fila.isEmpty()) {
+				return null;
+			}
+			Paciente proximo = fila.get(0);
+			proximo.setStatus(StatusPaciente.EM_ATENDIMENTO);
+			return pacienteRepository.save(proximo);
+		}catch(Exception e) {
+			System.err.println("Erro ao chamar próximo: " + e.getMessage());
+			throw new RuntimeException("Erro ao chamar proximo", e);
+		}
+	}
 
 }

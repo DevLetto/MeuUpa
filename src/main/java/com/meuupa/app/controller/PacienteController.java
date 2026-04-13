@@ -31,21 +31,21 @@ public class PacienteController {
 
 		return ResponseEntity.ok(lista);
 	}
-	
+
 	@GetMapping("/lista")
 	public String lista(Model model) {
 		model.addAttribute("pacientes", pacienteService.listarTodos());
 		return "lista";
 	}
-	
+
 	@GetMapping("/fila")
 	public String fila(Model model) {
 		model.addAttribute("pacientes", pacienteService.listarFila());
 		return "fila";
 	}
-	
+
 	@PostMapping("/salvar")
-	public String salvarFormulario (@ModelAttribute Paciente paciente) {
+	public String salvarFormulario(@ModelAttribute Paciente paciente) {
 		pacienteService.salvar(paciente);
 		return "redirect:/pacientes/lista";
 	}
@@ -68,5 +68,11 @@ public class PacienteController {
 	@ResponseBody
 	public ResponseEntity<Paciente> atualizar(@PathVariable Long id, @RequestBody Paciente paciente) {
 		return ResponseEntity.ok(pacienteService.atualizar(id, paciente));
+	}
+
+	@PostMapping("/chamar/{id}")
+	public String chamarProximo(@PathVariable Long id) {
+		pacienteService.chamarProximo();
+		return "redirect:/pacientes/lista";
 	}
 }
