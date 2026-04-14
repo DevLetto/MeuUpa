@@ -73,6 +73,6 @@ public class PacienteController {
 	@PostMapping("/chamar")
 	public String chamarProximo() {
 		pacienteService.chamarProximo();
-		return "redirect:/pacientes/lista";
+		return "redirect:/pacientes/fila";
 	}
 }
