@@ -5,41 +5,159 @@
     <div th:replace="~{base :: navbar('cadastro')}"></div>
 
     <main class="container py-5">
+        <style>
+            .register-shell {
+                background:
+                    radial-gradient(circle at top right, rgba(13, 110, 253, 0.14), transparent 28%),
+                    radial-gradient(circle at bottom left, rgba(25, 135, 84, 0.12), transparent 30%),
+                    linear-gradient(135deg, #fdfefe 0%, #f3f8ff 55%, #ffffff 100%);
+                border: 1px solid rgba(16, 35, 63, 0.08);
+                border-radius: 30px;
+                box-shadow: 0 24px 60px rgba(16, 35, 63, 0.12);
+                overflow: hidden;
+            }
+
+            .register-hero {
+                background: linear-gradient(135deg, #0b4fb3 0%, #0d6efd 52%, #55b0ff 100%);
+                color: #fff;
+            }
+
+            .register-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.45rem 0.8rem;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.14);
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+                font-size: 0.8rem;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+            }
+
+            .register-form-section {
+                background: rgba(255, 255, 255, 0.82);
+            }
+
+            .register-panel {
+                background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+                border: 1px solid rgba(13, 110, 253, 0.08);
+                border-radius: 24px;
+                padding: 1.5rem;
+            }
+
+            .register-label {
+                font-weight: 600;
+                color: #173666;
+                margin-bottom: 0.55rem;
+            }
+
+            .register-input,
+            .register-select {
+                min-height: 56px;
+                border-radius: 16px;
+                border: 1px solid rgba(16, 35, 63, 0.12);
+                box-shadow: none;
+                padding-inline: 1rem;
+            }
+
+            .register-input:focus,
+            .register-select:focus {
+                border-color: rgba(13, 110, 253, 0.42);
+                box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.12);
+            }
+
+            .register-tip {
+                background: linear-gradient(180deg, #ffffff 0%, #eef6ff 100%);
+                border: 1px solid rgba(13, 110, 253, 0.1);
+                border-radius: 22px;
+            }
+
+            .triage-list {
+                padding-left: 1rem;
+                margin-bottom: 0;
+            }
+
+            .triage-list li {
+                margin-bottom: 0.45rem;
+            }
+
+            @media (max-width: 991px) {
+                .register-shell {
+                    border-radius: 24px;
+                }
+            }
+        </style>
+
         <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body p-4">
-                        <h2 class="mb-4">Cadastrar Paciente</h2>
-                        <form th:action="@{/pacientes/salvar}" th:object="${paciente}" method="post">
-                            <div class="mb-3">
-                                <label class="form-label">Nome</label>
-                                <input type="text" th:field="*{nome}" class="form-control">
+            <div class="col-xl-10">
+                <section class="register-shell">
+                    <div class="row g-0">
+                        <div class="col-lg-5 register-hero p-4 p-lg-5 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="register-badge mb-3">Recepção Meu UPA</span>
+                                <h1 class="display-6 fw-bold mb-3">Cadastrar Paciente</h1>
+                                <p class="mb-3 text-white-50">As cores da triagem ajudam a definir a prioridade do atendimento:</p>
+
+                                <ul class="triage-list text-white-50">
+                                    <li><strong>Vermelho:</strong> atendimento imediato</li>
+                                    <li><strong>Laranja:</strong> muito urgente</li>
+                                    <li><strong>Amarelo:</strong> urgente</li>
+                                    <li><strong>Verde:</strong> pouco urgente</li>
+                                    <li><strong>Azul:</strong> nao urgente</li>
+                                </ul>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">CPF</label>
-                                <input type="text" th:field="*{cpf}" class="form-control">
+
+                            <div class="register-tip p-4 mt-4 text-dark">
+                                <h2 class="h5 mb-3">Antes de salvar</h2>
+                                <p class="mb-2">Confira CPF, data de nascimento e a cor da triagem para manter a fila correta.</p>
+                                <p class="mb-0 text-muted small">Esses dados ajudam a equipe a priorizar o atendimento e localizar o paciente rapidamente.</p>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Data de Nascimento</label>
-                                <input type="date" th:field="*{dataNascimento}" class="form-control">
+                        </div>
+
+                        <div class="col-lg-7 register-form-section p-4 p-lg-5">
+                            <div class="register-panel">
+                                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+                                    <div>
+                                        <p class="text-primary fw-semibold text-uppercase small mb-2">Formulario de cadastro</p>
+                                        <h2 class="mb-1">Cadastrar Paciente</h2>
+                                        <p class="text-muted mb-0">Preencha os dados abaixo para inserir o paciente no sistema.</p>
+                                    </div>
+                                    <a class="btn btn-outline-primary" th:href="@{/pacientes/lista}">Ver lista</a>
+                                </div>
+
+                                <form th:action="@{/pacientes/salvar}" th:object="${paciente}" method="post">
+                                    <div class="mb-3">
+                                        <label class="form-label register-label">Nome</label>
+                                        <input type="text" th:field="*{nome}" class="form-control register-input" placeholder="Digite o nome completo">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label register-label">CPF</label>
+                                        <input type="text" th:field="*{cpf}" class="form-control register-input" placeholder="000.000.000-00">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label register-label">Data de Nascimento</label>
+                                        <input type="date" th:field="*{dataNascimento}" class="form-control register-input">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label register-label">Cor da Triagem</label>
+                                        <select class="form-select register-select" th:field="*{corTriagem}">
+                                            <option value="VERMELHO">Vermelho</option>
+                                            <option value="LARANJA">Laranja</option>
+                                            <option value="AMARELO">Amarelo</option>
+                                            <option value="VERDE">Verde</option>
+                                            <option value="AZUL">Azul</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+                                        <a class="btn btn-outline-secondary" th:href="@{/pacientes/lista}">Cancelar</a>
+                                        <button type="submit" class="btn btn-primary px-4">Salvar paciente</button>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="mb-4">
-                                <label class="form-label">Cor da Triagem</label>
-                                <select class="form-select" th:field="*{corTriagem}">
-                                    <option value="VERMELHO">Vermelho</option>
-                                    <option value="LARANJA">Laranja</option>
-                                    <option value="AMARELO">Amarelo</option>
-                                    <option value="VERDE">Verde</option>
-                                    <option value="AZUL">Azul</option>
-                                </select>
-                            </div>
-                            <div class="d-flex justify-content-end gap-2">
-                                <a class="btn btn-outline-secondary" th:href="@{/pacientes/lista}">Cancelar</a>
-                                <button type="submit" class="btn btn-primary">Salvar</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
     </main>

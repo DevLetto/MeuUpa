@@ -5,45 +5,165 @@
 <div th:replace="~{base :: navbar('lista')}"></div>
 
 <main class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="mb-1">Fila de Pacientes</h2>
-            <p class="text-muted mb-0">Acompanhe a ordem de atendimento cadastrada no sistema.</p>
-        </div>
-        <a th:href="@{/pacientes/formulario}" class="btn btn-primary">Cadastrar paciente</a>
-    </div>
+    <style>
+        .list-hero {
+            background:
+                radial-gradient(circle at top left, rgba(220, 53, 69, 0.1), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(13, 110, 253, 0.16), transparent 26%),
+                linear-gradient(135deg, #fffdf8 0%, #ffffff 52%, #f1f7ff 100%);
+            border: 1px solid rgba(16, 35, 63, 0.08);
+            border-radius: 30px;
+            box-shadow: 0 22px 60px rgba(16, 35, 63, 0.1);
+        }
 
-    <div class="card shadow-sm border-0">
+        .list-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.45rem 0.85rem;
+            border-radius: 999px;
+            background: rgba(13, 110, 253, 0.08);
+            color: #0b4fb3;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .list-table-card {
+            border: 0;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 48px rgba(16, 35, 63, 0.12);
+        }
+
+        .list-table-head {
+            background: linear-gradient(135deg, #0b4fb3 0%, #0d6efd 60%, #43a4ff 100%);
+            color: #fff;
+        }
+
+        .list-table-head th {
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border: 0;
+        }
+
+        .list-table tbody tr {
+            transition: transform 0.18s ease, background-color 0.18s ease;
+        }
+
+        .list-table tbody tr:hover {
+            background-color: #f6faff;
+        }
+
+        .patient-name {
+            font-weight: 700;
+            color: #143766;
+        }
+
+        .patient-cpf,
+        .patient-time {
+            color: #5c6b80;
+        }
+
+        .patient-time {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.55rem 0.85rem;
+            border-radius: 14px;
+            background: #f3f7fd;
+            font-weight: 600;
+        }
+
+        .badge-soft-danger {
+            background: rgba(220, 53, 69, 0.14);
+            color: #b42318;
+        }
+
+        .badge-soft-orange {
+            background: rgba(247, 127, 0, 0.18);
+            color: #9a4a00;
+        }
+
+        .badge-soft-warning {
+            background: rgba(255, 214, 10, 0.22);
+            color: #8a6a00;
+        }
+
+        .badge-soft-success {
+            background: rgba(25, 135, 84, 0.14);
+            color: #0f6a43;
+        }
+
+        .badge-soft-primary {
+            background: rgba(13, 110, 253, 0.14);
+            color: #0b4fb3;
+        }
+
+        .list-empty {
+            border: 1px dashed rgba(16, 35, 63, 0.16);
+            border-radius: 24px;
+            background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+        }
+    </style>
+
+    <section class="list-hero p-4 p-lg-5 mb-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+            <div>
+                <span class="list-chip mb-3">Painel de pacientes</span>
+                <h1 class="h2 fw-bold mb-2">Fila de Pacientes</h1>
+                <p class="text-muted mb-0">Acompanhe a ordem de atendimento cadastrada no sistema com uma visualizacao mais clara e organizada.</p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <a th:href="@{/pacientes/formulario}" class="btn btn-primary">Cadastrar paciente</a>
+                <a th:href="@{/pacientes/fila}" class="btn btn-outline-primary">Ver cards da fila</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="card list-table-card">
         <div class="card-body p-0">
-            <table class="table table-striped mb-0">
-                <thead class="table-light">
+            <div th:if="${!#lists.isEmpty(pacientes)}" class="table-responsive">
+                <table class="table list-table align-middle mb-0">
+                    <thead class="list-table-head">
                     <tr>
                         <th class="px-4 py-3">Nome</th>
                         <th class="px-4 py-3">CPF</th>
                         <th class="px-4 py-3">Triagem</th>
                         <th class="px-4 py-3">Horario</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     <tr th:each="paciente : ${pacientes}">
-                        <td class="px-4 py-3" th:text="${paciente.nome}"></td>
-                        <td class="px-4 py-3" th:text="${paciente.cpf}"></td>
+                        <td class="px-4 py-3">
+                            <div class="patient-name" th:text="${paciente.nome}">Nome do paciente</div>
+                        </td>
+                        <td class="px-4 py-3 patient-cpf" th:text="${paciente.cpf}">000.000.000-00</td>
                         <td class="px-4 py-3">
                             <span th:switch="${paciente.corTriagem.name()}">
-                                <span th:case="'VERMELHO'" class="badge bg-danger">VERMELHO</span>
-                                <span th:case="'LARANJA'" class="badge bg-warning text-dark">LARANJA</span>
-                                <span th:case="'AMARELO'" class="badge bg-warning">AMARELO</span>
-                                <span th:case="'VERDE'" class="badge bg-success">VERDE</span>
-                                <span th:case="'AZUL'" class="badge bg-primary">AZUL</span>
+                                <span th:case="'VERMELHO'" class="badge rounded-pill badge-soft-danger px-3 py-2">VERMELHO</span>
+                                <span th:case="'LARANJA'" class="badge rounded-pill badge-soft-orange px-3 py-2">LARANJA</span>
+                                <span th:case="'AMARELO'" class="badge rounded-pill badge-soft-warning px-3 py-2">AMARELO</span>
+                                <span th:case="'VERDE'" class="badge rounded-pill badge-soft-success px-3 py-2">VERDE</span>
+                                <span th:case="'AZUL'" class="badge rounded-pill badge-soft-primary px-3 py-2">AZUL</span>
                             </span>
                         </td>
-                        <td class="px-4 py-3" th:text="${paciente.data}"></td>
+                        <td class="px-4 py-3">
+                            <span class="patient-time"
+                                  th:text="${paciente.data != null ? #temporals.format(paciente.data, 'dd/MM/yyyy ''as'' HH:mm') : 'Horario nao informado'}">
+                                14/04/2026 as 12:00
+                            </span>
+                        </td>
                     </tr>
-                    <tr th:if="${#lists.isEmpty(pacientes)}">
-                        <td colspan="4" class="text-center text-muted py-4">Nenhum paciente cadastrado.</td>
-                    </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+
+            <div th:if="${#lists.isEmpty(pacientes)}" class="list-empty text-center py-5 px-4 m-4">
+                <h2 class="h4 mb-2">Nenhum paciente cadastrado</h2>
+                <p class="text-muted mb-4">Comece cadastrando um paciente para preencher a lista de atendimento.</p>
+                <a th:href="@{/pacientes/formulario}" class="btn btn-primary">Cadastrar o primeiro paciente</a>
+            </div>
         </div>
     </div>
 </main>
