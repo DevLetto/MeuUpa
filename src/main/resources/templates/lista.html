@@ -140,12 +140,13 @@
                         </td>
                         <td class="px-4 py-3 patient-cpf" th:text="${paciente.cpf}">000.000.000-00</td>
                         <td class="px-4 py-3">
-                            <span th:switch="${paciente.corTriagem.name()}">
+                            <span th:switch="${paciente.corTriagem != null ? paciente.corTriagem.name() : 'SEM_TRIAGEM'}">
                                 <span th:case="'VERMELHO'" class="badge rounded-pill badge-soft-danger px-3 py-2">VERMELHO</span>
                                 <span th:case="'LARANJA'" class="badge rounded-pill badge-soft-orange px-3 py-2">LARANJA</span>
                                 <span th:case="'AMARELO'" class="badge rounded-pill badge-soft-warning px-3 py-2">AMARELO</span>
                                 <span th:case="'VERDE'" class="badge rounded-pill badge-soft-success px-3 py-2">VERDE</span>
                                 <span th:case="'AZUL'" class="badge rounded-pill badge-soft-primary px-3 py-2">AZUL</span>
+                                <span th:case="*" class="badge rounded-pill text-bg-secondary px-3 py-2">SEM TRIAGEM</span>
                             </span>
                         </td>
                         <td class="px-4 py-3">

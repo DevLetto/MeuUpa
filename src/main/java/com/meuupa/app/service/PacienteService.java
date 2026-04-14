@@ -31,7 +31,8 @@ public class PacienteService {
 
 	public List<Paciente> listarTodos(CorTriagem corTriagem) {
 		try {
-			return pacienteRepository.findAll().stream().filter(p -> p.getCorTriagem().equals(corTriagem))
+			return pacienteRepository.findAll().stream()
+					.filter(p -> p.getCorTriagem() != null && p.getCorTriagem().equals(corTriagem))
 					.collect(java.util.stream.Collectors.toList());
 
 		} catch (Exception e) {
@@ -45,7 +46,7 @@ public class PacienteService {
 			return pacienteRepository.findFilaOrdenada()
 				.stream()
 				.sorted(Comparator
-						.comparingInt(p -> p.getCorTriagem().getPrioridade()))
+						.comparingInt(p -> p.getCorTriagem() != null ? p.getCorTriagem().getPrioridade() : Integer.MAX_VALUE))
 				.collect(java.util.stream.Collectors.toList());
 
 		} catch (Exception e) {
