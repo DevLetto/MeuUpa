@@ -96,7 +96,22 @@ public class PacienteService {
 			}
 			Paciente proximo = fila.get(0);
 			proximo.setStatus(StatusPaciente.EM_ATENDIMENTO);
-			return pacienteRepository.save(proximo);
+			Paciente salvo = pacienteRepository.save(proximo);
+			
+			Thread thread = new Thread(() -> {
+				try {
+					
+					System.out.println("[Thread: " + Thread.currentThread().getName() + "] Processando atendimento de: " + salvo.getNome() + " | Triagem: " + salvo.getCorTriagem());
+					Thread.sleep(10000);
+					System.out.println("[Thread] Atendimento registrado com sucesso.");
+				}catch( InterruptedException e){
+					System.err.println("[Thread] Processamento Interrompido: " + e.getMessage());
+				}
+			});
+			thread.start();
+			
+			return salvo;
+						
 		}catch(Exception e) {
 			System.err.println("Erro ao chamar próximo: " + e.getMessage());
 			throw new RuntimeException("Erro ao chamar proximo", e);
