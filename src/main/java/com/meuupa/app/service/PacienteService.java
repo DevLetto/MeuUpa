@@ -98,6 +98,10 @@ public class PacienteService {
 			proximo.setStatus(StatusPaciente.EM_ATENDIMENTO);
 			Paciente salvo = pacienteRepository.save(proximo);
 			
+			// THREAD: simula o processamento do atendimento em segundo plano.
+			// Assim, o metodo ja retorna o paciente chamado para a tela, enquanto
+			// outra linha de execucao continua registrando o atendimento sem travar
+			// a resposta principal do sistema.
 			Thread thread = new Thread(() -> {
 				try {
 					
