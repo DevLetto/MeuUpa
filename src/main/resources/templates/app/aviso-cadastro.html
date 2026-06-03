@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Necessário — Meu UPA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --upa-primary: #0d6efd;
+            --upa-primary-deep: #0b4fb3;
+            --upa-surface: #f4f8ff;
+            --upa-ink: #10233f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body { height: 100%; }
+
+        body {
+            background: radial-gradient(circle at top left, rgba(13,110,253,0.08), transparent 28%),
+                        linear-gradient(180deg, #f8fbff 0%, #ffffff 38%, #f4f8ff 100%);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 430px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* ── Cabeçalho com link de volta ── */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #5c6b80;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .back-link:hover { color: var(--upa-primary); }
+
+        /* ── Card principal ── */
+        .aviso-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 18px 40px rgba(15,23,42,0.10),
+                        0 2px 8px rgba(13,110,253,0.06);
+            border: 1px solid rgba(13,110,253,0.08);
+            text-align: center;
+        }
+
+        /* ── Ícone informativo grande ── */
+        .icon-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.75rem;
+        }
+
+        .icon-bg {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            border: 2px solid #bfdbfe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-bg i {
+            font-size: 2.5rem;
+            color: var(--upa-primary);
+        }
+
+        /* Pontinho decorativo no canto do ícone */
+        .icon-dot {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--upa-primary-deep), var(--upa-primary));
+            border: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.55rem;
+            color: #fff;
+        }
+
+        /* ── Título ── */
+        .aviso-card h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--upa-ink);
+            margin-bottom: 1rem;
+        }
+
+        /* ── Texto explicativo ── */
+        .aviso-card .aviso-text {
+            font-size: 0.92rem;
+            color: #5c6b80;
+            line-height: 1.65;
+            margin-bottom: 2rem;
+        }
+
+        /* ── Blocos de passo ── */
+        .steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #f8fbff;
+            border-radius: 12px;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .step-num {
+            min-width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--upa-primary-deep), var(--upa-primary));
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 0.85rem;
+            color: var(--upa-ink);
+            line-height: 1.45;
+        }
+
+        /* ── Botão ── */
+        .btn-voltar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 52px;
+            border-radius: 999px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: 2px solid var(--upa-primary);
+            color: var(--upa-primary);
+            background: transparent;
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s, transform 0.15s;
+        }
+
+        .btn-voltar:hover, .btn-voltar:focus {
+            background: var(--upa-primary);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .btn-voltar:active { transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- Link de voltar -->
+        <div>
+            <a th:href="@{/app/login}" href="/app/login" class="back-link">
+                <i class="bi bi-arrow-left"></i> Voltar ao login
+            </a>
+        </div>
+
+        <!-- Card de aviso -->
+        <div class="aviso-card">
+
+            <!-- Ícone informativo -->
+            <div class="icon-wrapper">
+                <div class="icon-bg">
+                    <i class="bi bi-info-circle"></i>
+                </div>
+                <div class="icon-dot">i</div>
+            </div>
+
+            <h2>Cadastro necessário</h2>
+
+            <p class="aviso-text">
+                Para usar o aplicativo <strong>Meu UPA</strong>, você precisa estar
+                cadastrado em uma UPA. O cadastro é feito presencialmente na
+                recepção da unidade de saúde. Após o cadastro, você poderá
+                acompanhar sua posição na fila por aqui.
+            </p>
+
+            <!-- Passos explicativos -->
+            <div class="steps-list">
+                <div class="step-item">
+                    <div class="step-num">1</div>
+                    <div class="step-text">
+                        <strong>Vá até a UPA</strong> mais próxima de você com um
+                        documento de identidade com foto e CPF.
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-num">2</div>
+                    <div class="step-text">
+                        <strong>Informe seus dados</strong> na recepção para que
+                        a equipe realize seu cadastro no sistema.
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-num">3</div>
+                    <div class="step-text">
+                        <strong>Pronto!</strong> Use seu CPF e data de nascimento
+                        para entrar no Meu UPA e acompanhar sua fila.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botão voltar para o login -->
+            <a th:href="@{/app/login}" href="/app/login" class="btn-voltar">
+                <i class="bi bi-arrow-left-circle me-2"></i>
+                Voltar para o login
+            </a>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

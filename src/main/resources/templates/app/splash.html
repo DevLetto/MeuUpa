@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu UPA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --upa-primary: #0d6efd;
+            --upa-primary-deep: #0b4fb3;
+            --upa-surface: #f4f8ff;
+            --upa-ink: #10233f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            background: radial-gradient(circle at top left, rgba(13,110,253,0.08), transparent 28%),
+                        linear-gradient(180deg, #f8fbff 0%, #ffffff 38%, #f4f8ff 100%);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 430px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 0 24px;
+            padding-top: env(safe-area-inset-top, 0px);
+        }
+
+        /* ── Seção superior: logo + título ── */
+        .top-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 3rem;
+        }
+
+        .logo-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .logo-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -16px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(13,110,253,0.12) 0%, transparent 70%);
+        }
+
+        .logo-wrapper img {
+            height: 90px;
+            width: auto;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 8px 16px rgba(13,110,253,0.25));
+        }
+
+        /* fallback quando a imagem não carrega */
+        .logo-fallback {
+            height: 90px;
+            width: 90px;
+            background: linear-gradient(135deg, var(--upa-primary-deep), var(--upa-primary));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(13,110,253,0.35);
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--upa-ink);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.625rem;
+        }
+
+        .app-subtitle {
+            font-size: 1rem;
+            color: #5c6b80;
+            line-height: 1.55;
+            max-width: 300px;
+        }
+
+        /* ── Decoração de ondas / chips ── */
+        .chip-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .chip {
+            background: #fff;
+            border: 1px solid #dbeafe;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 0.78rem;
+            color: var(--upa-primary-deep);
+            font-weight: 500;
+            box-shadow: 0 2px 6px rgba(13,110,253,0.08);
+        }
+
+        /* ── Seção inferior: botão ── */
+        .bottom-section {
+            padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
+        }
+
+        .btn-entrar {
+            width: 100%;
+            height: 52px;
+            border-radius: 999px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            background: linear-gradient(135deg, var(--upa-primary-deep) 0%, var(--upa-primary) 55%, #45a3ff 100%);
+            border: none;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(13,110,253,0.35);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .btn-entrar:hover,
+        .btn-entrar:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(13,110,253,0.4);
+            color: #fff;
+        }
+
+        .btn-entrar:active {
+            transform: translateY(0);
+        }
+
+        .disclaimer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 1rem;
+        }
+
+        .disclaimer i {
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- TOPO: logo + título + subtítulo -->
+        <div class="top-section">
+            <div class="logo-wrapper">
+                <!--
+                    Tenta carregar a logo do sistema.
+                    Se não existir, o onerror exibe o fallback com emoji.
+                -->
+                <img th:src="@{/img/logo-upa.png}"
+                     src="/img/logo-upa.png"
+                     alt="Logo Meu UPA"
+                     onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+                <div id="logoFallback" class="logo-fallback" style="display:none;">
+                    <i class="bi bi-hospital"></i>
+                </div>
+            </div>
+
+            <h1 class="app-title">Meu UPA</h1>
+            <p class="app-subtitle">
+                Acompanhe sua posição na fila de atendimento em tempo real.
+            </p>
+
+            <!-- Chips informativos -->
+            <div class="chip-row">
+                <span class="chip"><i class="bi bi-clock me-1"></i>Tempo de espera</span>
+                <span class="chip"><i class="bi bi-shield-check me-1"></i>Seguro</span>
+                <span class="chip"><i class="bi bi-phone me-1"></i>Mobile</span>
+            </div>
+        </div>
+
+        <!-- BAIXO: botão de entrada -->
+        <div class="bottom-section">
+            <a th:href="@{/app/login}" href="/app/login" class="btn btn-entrar d-flex align-items-center justify-content-center">
+                <i class="bi bi-arrow-right-circle me-2 fs-5"></i>
+                Entrar
+            </a>
+            <p class="disclaimer">
+                <i class="bi bi-lock-fill me-1"></i>
+                Seus dados são usados apenas para identificação na fila
+            </p>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
