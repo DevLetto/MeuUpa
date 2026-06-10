@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Auto-refresh a cada 30 segundos (equivalente ao Thread/polling) -->
+    <meta http-equiv="refresh" content="30">
+    <title>Minha Fila | Meu UPA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --upa-primary:      #0d6efd;
+            --upa-primary-deep: #0b4fb3;
+            --upa-surface:      #f4f8ff;
+            --upa-ink:          #10233f;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            min-height: 100dvh;
+            background:
+                radial-gradient(circle at top left, rgba(13,110,253,0.08), transparent 28%),
+                linear-gradient(180deg, #f8fbff 0%, #ffffff 38%, #f4f8ff 100%);
+            color: var(--upa-ink);
+            padding-bottom: 2rem;
+        }
+
+        /* ══ HEADER ══════════════════════════════════════════════════════════ */
+        .app-header {
+            background: linear-gradient(135deg, var(--upa-primary-deep) 0%, var(--upa-primary) 55%, #45a3ff 100%);
+            padding: 1rem 1.25rem 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 18px rgba(11,79,179,0.22);
+        }
+
+        .header-info .upa-label-header {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.75);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            line-height: 1;
+        }
+
+        .header-info .paciente-nome-header {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.3;
+            margin-top: 0.15rem;
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 999px;
+            color: #fff;
+            font-size: 0.8rem;
+            padding: 0.35rem 0.85rem;
+            text-decoration: none;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-logout:hover { background: rgba(255,255,255,0.25); color: #fff; }
+
+        /* ══ WRAPPER ══════════════════════════════════════════════════════════ */
+        .app-wrapper {
+            max-width: 430px;
+            margin: 0 auto;
+            padding: 1.5rem 1.25rem 2rem;
+        }
+
+        /* ══ CARD PRINCIPAL (posição na fila) ═══════════════════════════════ */
+        .card-posicao {
+            background: #fff;
+            border-radius: 28px;
+            box-shadow: 0 18px 40px rgba(15,23,42,0.12);
+            padding: 2rem 1.75rem 1.75rem;
+            margin-bottom: 1.25rem;
+            text-align: center;
+        }
+
+        /* Badge de triagem Manchester */
+        .badge-triagem {
+            display: inline-block;
+            padding: 0.35rem 1.1rem;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+
+        .badge-VERMELHO { background: #dc3545; color: #fff; }
+        .badge-LARANJA  { background: #f77f00; color: #fff; }
+        .badge-AMARELO  { background: #ffd60a; color: #10233f; }
+        .badge-VERDE    { background: #2a9d8f; color: #fff; }
+        .badge-AZUL     { background: #1d4ed8; color: #fff; }
+
+        /* Número da posição */
+        .posicao-label {
+            font-size: 0.85rem;
+            color: #5c6b80;
+            margin-bottom: 0;
+        }
+
+        .posicao-numero {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--upa-primary-deep);
+            line-height: 1;
+            margin: 0.1rem 0 0;
+        }
+
+        .posicao-sufixo {
+            font-size: 1rem;
+            color: #5c6b80;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Linha de meta-infos */
+        .meta-row {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 1.1rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-valor {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--upa-ink);
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            color: #5c6b80;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* Mensagem se paciente não está na fila */
+        .fora-da-fila {
+            color: #5c6b80;
+            font-size: 0.95rem;
+            padding: 0.5rem 0 1rem;
+        }
+
+        /* ══ PAINEL DE CONTAGEM POR COR ════════════════════════════════════ */
+        .secao-titulo {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #5c6b80;
+            margin-bottom: 0.65rem;
+            font-weight: 600;
+        }
+
+        .grid-cores {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .cor-card {
+            border-radius: 14px;
+            padding: 0.6rem 0.25rem;
+            text-align: center;
+        }
+
+        .cor-card .cor-qtd {
+            font-size: 1.4rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .cor-card .cor-nome {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 0.2rem;
+            opacity: 0.85;
+        }
+
+        .cor-vermelho { background: #fee2e2; color: #dc3545; }
+        .cor-laranja  { background: #ffedd5; color: #c2580a; }
+        .cor-amarelo  { background: #fef9c3; color: #8a6a00; }
+        .cor-verde    { background: #d1fae5; color: #0f6a43; }
+        .cor-azul     { background: #dbeafe; color: #1d4ed8; }
+
+        /* ══ AVISO DE EMERGÊNCIA ════════════════════════════════════════════ */
+        .aviso-emergencia {
+            background: #fee2e2;
+            border: 1.5px solid #fca5a5;
+            border-radius: 16px;
+            padding: 1rem 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .aviso-emergencia .aviso-icone {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .aviso-emergencia .aviso-texto {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #b42318;
+            line-height: 1.4;
+        }
+
+        /* ══ BOTÃO ATUALIZAR ════════════════════════════════════════════════ */
+        .btn-atualizar {
+            width: 100%;
+            height: 52px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .btn-atualizar:active { transform: scale(0.97); }
+
+        /* ══ INDICADOR DE REFRESH ══════════════════════════════════════════ */
+        .refresh-info {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #5c6b80;
+            margin-top: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ══ HEADER ══════════════════════════════════════════════════════════ -->
+    <header class="app-header">
+        <div class="header-info">
+            <p class="upa-label-header" th:text="${upaNome}">UPA 24h Ceilândia</p>
+            <p class="paciente-nome-header" th:text="${pacienteLogado.nome}">João da Silva</p>
+        </div>
+
+        <!-- Logout via POST para invalidar a sessão corretamente -->
+        <form method="post" th:action="@{/app/logout}" style="margin:0">
+            <button type="submit" class="btn-logout">Sair ↩</button>
+        </form>
+    </header>
+
+    <!-- ══ CONTEÚDO ══════════════════════════════════════════════════════ -->
+    <div class="app-wrapper">
+
+        <!-- ── Card de posição na fila ─────────────────────────────── -->
+        <div class="card-posicao">
+
+            <!-- Badge de triagem Manchester -->
+            <span class="badge-triagem"
+                  th:classappend="'badge-' + ${pacienteLogado.corTriagem?.name()}"
+                  th:text="${pacienteLogado.corTriagem?.name()}">
+                VERDE
+            </span>
+
+            <!-- Caso o paciente esteja na fila -->
+            <div th:if="${posicao != null and posicao > 0}">
+                <p class="posicao-label">Você é o</p>
+                <p class="posicao-numero" th:text="${posicao}">3</p>
+                <p class="posicao-sufixo">na fila de espera</p>
+
+                <div class="meta-row">
+                    <div class="meta-item">
+                        <div class="meta-valor"
+                             th:text="${#temporals.format(pacienteLogado.data, 'HH:mm')}">
+                            14:35
+                        </div>
+                        <div class="meta-label">Chegada</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-valor" th:text="${totalFila}">12</div>
+                        <div class="meta-label">Aguardando</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Caso o paciente não esteja mais na fila -->
+            <div th:if="${posicao == null or posicao <= 0}" class="fora-da-fila">
+                <p>🏥 Você já está sendo atendido ou foi atendido.<br>
+                   Dirija-se à recepção.</p>
+            </div>
+
+        </div>
+
+        <!-- ── Painel de contagem por cor ──────────────────────────── -->
+        <p class="secao-titulo">Pessoas aguardando por prioridade</p>
+        <div class="grid-cores">
+
+            <div class="cor-card cor-vermelho">
+                <div class="cor-qtd" th:text="${qtdVermelho}">0</div>
+                <div class="cor-nome">Vermelho</div>
+            </div>
+
+            <div class="cor-card cor-laranja">
+                <div class="cor-qtd" th:text="${qtdLaranja}">0</div>
+                <div class="cor-nome">Laranja</div>
+            </div>
+
+            <div class="cor-card cor-amarelo">
+                <div class="cor-qtd" th:text="${qtdAmarelo}">0</div>
+                <div class="cor-nome">Amarelo</div>
+            </div>
+
+            <div class="cor-card cor-verde">
+                <div class="cor-qtd" th:text="${qtdVerde}">0</div>
+                <div class="cor-nome">Verde</div>
+            </div>
+
+            <div class="cor-card cor-azul">
+                <div class="cor-qtd" th:text="${qtdAzul}">0</div>
+                <div class="cor-nome">Azul</div>
+            </div>
+
+        </div>
+
+        <!-- ── Aviso de emergência ─────────────────────────────────── -->
+        <div class="aviso-emergencia">
+            <span class="aviso-icone">🚨</span>
+            <span class="aviso-texto">
+                Se você piorar, avise a recepção imediatamente!
+            </span>
+        </div>
+
+        <!-- ── Botão de atualizar manual ──────────────────────────── -->
+        <a th:href="@{/app/fila}" class="btn btn-outline-primary btn-atualizar">
+            🔄 &nbsp;Atualizar fila
+        </a>
+
+        <p class="refresh-info">A página atualiza automaticamente a cada 30 segundos.</p>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Confirmar UPA | Meu UPA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --upa-primary:      #0d6efd;
+            --upa-primary-deep: #0b4fb3;
+            --upa-surface:      #f4f8ff;
+            --upa-ink:          #10233f;
+        }
+
+        body {
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at top left, rgba(13,110,253,0.08), transparent 28%),
+                linear-gradient(180deg, #f8fbff 0%, #ffffff 38%, #f4f8ff 100%);
+            color: var(--upa-ink);
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 430px;
+            padding: 1.5rem 1.25rem 2.5rem;
+        }
+
+        /* ── Card principal ── */
+        .upa-card {
+            background: #fff;
+            border-radius: 28px;
+            box-shadow: 0 18px 40px rgba(15,23,42,0.12);
+            padding: 2.5rem 2rem 2rem;
+            text-align: center;
+        }
+
+        /* ── Ícone de localização ── */
+        .pin-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--upa-surface);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            font-size: 1.8rem;
+        }
+
+        /* ── Nome da UPA ── */
+        .upa-nome {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--upa-primary-deep);
+            line-height: 1.3;
+            margin-bottom: 0.4rem;
+        }
+
+        .upa-pergunta {
+            font-size: 0.95rem;
+            color: #5c6b80;
+            margin-bottom: 2rem;
+        }
+
+        /* ── Botões ── */
+        .btn-upa {
+            height: 52px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .btn-upa:active {
+            transform: scale(0.97);
+        }
+
+        .btn-sim {
+            flex: 1;
+        }
+
+        .btn-nao {
+            flex: 1;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* ── Label acima do nome ── */
+        .upa-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #5c6b80;
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-wrapper">
+        <div class="upa-card">
+
+            <div class="pin-icon">📍</div>
+
+            <p class="upa-label">Você está em</p>
+            <p class="upa-nome" th:text="${upaNome}">UPA 24h Ceilândia</p>
+            <p class="upa-pergunta">Esta é a sua unidade de atendimento?</p>
+
+            <div class="btn-row">
+                <!-- Sim: vai direto para a fila -->
+                <a th:href="@{/app/fila}"
+                   class="btn btn-primary btn-upa btn-sim">
+                    ✓ &nbsp;Sim, estou aqui
+                </a>
+
+                <!-- Não: vai para seleção de UPA -->
+                <a th:href="@{/app/selecionar-upa}"
+                   class="btn btn-outline-primary btn-upa btn-nao">
+                    Não, mudar
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
