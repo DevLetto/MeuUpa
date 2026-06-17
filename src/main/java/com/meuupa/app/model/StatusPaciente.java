@@ -1,5 +1,6 @@
 package com.meuupa.app.model;
 
+
 public enum StatusPaciente {
 
 	AGUARDANDO,

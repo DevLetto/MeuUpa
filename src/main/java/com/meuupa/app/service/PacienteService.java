@@ -88,6 +88,7 @@ public class PacienteService {
 
 	}
 	
+	//Thread
 	public Paciente chamarProximo() {
 		try {
 			List<Paciente> fila = listarFila();
@@ -98,17 +99,13 @@ public class PacienteService {
 			proximo.setStatus(StatusPaciente.EM_ATENDIMENTO);
 			Paciente salvo = pacienteRepository.save(proximo);
 			
-			// THREAD: simula o processamento do atendimento em segundo plano.
-			// Assim, o metodo ja retorna o paciente chamado para a tela, enquanto
-			// outra linha de execucao continua registrando o atendimento sem travar
-			// a resposta principal do sistema.
+			
 			Thread thread = new Thread(() -> {
 				try {
 					
 					System.out.println("[Thread: " + Thread.currentThread().getName() + "] Processando atendimento de: " + salvo.getNome() + " | Triagem: " + salvo.getCorTriagem());
-					Thread.sleep(10000);
 					System.out.println("[Thread] Atendimento registrado com sucesso.");
-				}catch( InterruptedException e){
+				}catch( Exception e){
 					System.err.println("[Thread] Processamento Interrompido: " + e.getMessage());
 				}
 			});

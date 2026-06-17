@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 
+//heranca
 @Entity
 @Table(name = "pacientes")
 public class Paciente extends Pessoa implements Serializable {
@@ -40,12 +41,12 @@ public class Paciente extends Pessoa implements Serializable {
 	@Column
 	@Enumerated(EnumType.STRING)
 	private StatusPaciente status;
-	
 
 	public Paciente() {
 
 	}
 
+	// Sobrecarga
 	public Paciente(String nome, String cpf, CorTriagem corTriagem) {
 		this.nome = nome;
 		this.cpf = cpf;
@@ -84,6 +85,7 @@ public class Paciente extends Pessoa implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
+	//Sobrescrita Polimorfismo
 	@Override
 	public String getResumo() {
 		return "Paciente: " + nome + " | Triagem: " + corTriagem;
