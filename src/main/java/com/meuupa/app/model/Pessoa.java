@@ -2,7 +2,7 @@ package com.meuupa.app.model;
 
 import jakarta.persistence.MappedSuperclass;
 
-//Heranca, encapsulamento e abstracao
+//encapsulamento e abstracao
 @MappedSuperclass
 public abstract class Pessoa {
 

@@ -15,7 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 
-//heranca
+//heranca, encapsulamento,polimorfismo sobrecarga e sobreescrita
 @Entity
 @Table(name = "pacientes")
 public class Paciente extends Pessoa implements Serializable {
@@ -43,10 +43,10 @@ public class Paciente extends Pessoa implements Serializable {
 	private StatusPaciente status;
 
 	public Paciente() {
-
+		
 	}
 
-	// Sobrecarga
+	// Sobrecarga	
 	public Paciente(String nome, String cpf, CorTriagem corTriagem) {
 		this.nome = nome;
 		this.cpf = cpf;

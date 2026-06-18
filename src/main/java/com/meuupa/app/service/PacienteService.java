@@ -13,6 +13,8 @@ import com.meuupa.app.model.Paciente;
 import com.meuupa.app.model.StatusPaciente;
 import com.meuupa.app.repository.PacienteRepository;
 
+
+//TryCatch e Thread
 @Service
 public class PacienteService {
 
